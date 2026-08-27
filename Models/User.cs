@@ -1,6 +1,8 @@
 namespace cis_proj.Models;
 
-
+/// <summary>
+/// Represents a user in the system
+/// </summary>
 public class User
 {
     /// <summary>
