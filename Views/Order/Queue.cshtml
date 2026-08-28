@@ -4,7 +4,7 @@
 }
 
 <h1>Order Queue</h1>
-<p>Orders are listed oldest first. Use the button on each order to move it along: start preparing it, then mark it ready for pick up by the server.</p>
+<p>Oldest orders first. Claim an order to start preparing it, then mark it ready for pick up.</p>
 
 @if (!Model.Any())
 {
@@ -20,6 +20,7 @@ else
                 <th>Customer</th>
                 <th>Placed At</th>
                 <th>Status</th>
+                <th>Claimed By</th>
                 <th>Finished At</th>
                 <th></th>
             </tr>
@@ -46,14 +47,15 @@ else
                                 break;
                         }
                     </td>
-                    <td>@(order.FinishedAt?.ToString("g") ?? "-")</td>
+                    <td>@(order.AssignedBartender?.Name ?? "—")</td>
+                    <td>@(order.FinishedAt?.ToString("g") ?? "—")</td>
                     <td>
                         @if (order.GetOrderStatus() != OrderStatus.Finished)
                         {
                             <form asp-controller="Order" asp-action="Advance" asp-route-id="@order.Id" method="post">
                                 @if (order.GetOrderStatus() == OrderStatus.Ordered)
                                 {
-                                    <button type="submit" class="btn btn-sm btn-primary">Start Preparing</button>
+                                    <button type="submit" class="btn btn-sm btn-primary">Claim &amp; Start</button>
                                 }
                                 else
                                 {

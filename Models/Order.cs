@@ -36,6 +36,11 @@ public class Order
     public Drink? Drink { get; set; }
 
     /// <summary>
+    /// The ID of the staff member who claimed the order, if anyone.
+    /// </summary>
+    public int? AssignedBartenderId { get; set; }
+
+    /// <summary>
     /// The bartender who is assigned to the order.
     /// </summary>
     public User? AssignedBartender { get; set; }

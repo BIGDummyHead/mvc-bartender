@@ -1,4 +1,6 @@
+using System.Security.Claims;
 using cis_proj.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -98,9 +100,11 @@ public class OrderController : Controller
 
     /// <summary>
     /// Displays the cocktail order queue for the bartender.
+    /// Staff must be signed in to see it.
     /// </summary>
     /// <returns>The queue view with all orders, oldest unfinished orders first</returns>
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> Queue()
     {
         var orders = await _context.Order
@@ -115,11 +119,13 @@ public class OrderController : Controller
 
     /// <summary>
     /// Moves an order to the next status. Ordered -> Started -> Finished.
+    /// Starting an order claims it for the signed-in staff member.
     /// A finished order is ready for pick up by the server.
     /// </summary>
     /// <param name="id">The ID of the order to update</param>
     /// <returns>Redirects back to the order queue</returns>
     [HttpPost]
+    [Authorize]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Advance(int id)
     {
@@ -132,6 +138,11 @@ public class OrderController : Controller
         {
             case Models.OrderStatus.Ordered:
                 order.OrderStatus = (int)Models.OrderStatus.Started;
+
+                // Claim the order for whoever is signed in.
+                string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                if (int.TryParse(userId, out int staffId))
+                    order.AssignedBartenderId = staffId;
                 break;
             case Models.OrderStatus.Started:
                 order.OrderStatus = (int)Models.OrderStatus.Finished;
