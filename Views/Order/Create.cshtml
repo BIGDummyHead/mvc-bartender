@@ -1,0 +1,25 @@
+@model Drink
+@{
+    ViewData["Title"] = "Place Order";
+}
+
+<h1>Place Your Order</h1>
+
+<div class="card mb-3" style="max-width: 30rem;">
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <h6 class="card-subtitle mb-2 text-muted">@Model.Price.ToString("C")</h6>
+        <p class="card-text">@Model.Description</p>
+    </div>
+</div>
+
+<form asp-controller="Order" asp-action="Create" method="post" style="max-width: 30rem;">
+    <input type="hidden" name="drinkId" value="@Model.Id" />
+    <div class="mb-3">
+        <label for="customerName" class="form-label">Your Name</label>
+        <input type="text" class="form-control" id="customerName" name="customerName" required />
+        <span class="text-danger">@Html.ValidationMessage("customerName")</span>
+    </div>
+    <button type="submit" class="btn btn-success">Place Order</button>
+    <a class="btn btn-secondary" asp-controller="Order" asp-action="Menu">Back to Menu</a>
+</form>

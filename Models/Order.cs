@@ -26,6 +26,16 @@ public class Order
     public string CustomerName { get; set; }
 
     /// <summary>
+    /// The ID of the drink that was ordered.
+    /// </summary>
+    public int DrinkId { get; set; }
+
+    /// <summary>
+    /// The drink that was ordered.
+    /// </summary>
+    public Drink? Drink { get; set; }
+
+    /// <summary>
     /// The bartender who is assigned to the order.
     /// </summary>
     public User? AssignedBartender { get; set; }
