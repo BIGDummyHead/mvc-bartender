@@ -1,0 +1,31 @@
+@model IEnumerable<Drink>
+@{
+    ViewData["Title"] = "Cocktail Menu";
+}
+
+<h1>Cocktail Menu</h1>
+<p>Pick a cocktail below to place your order.</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Drink</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var drink in Model)
+        {
+            <tr>
+                <td>@drink.Name</td>
+                <td>@drink.Description</td>
+                <td>@drink.Price.ToString("C")</td>
+                <td>
+                    <a class="btn btn-sm btn-primary" asp-controller="Order" asp-action="Create" asp-route-id="@drink.Id">Order</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

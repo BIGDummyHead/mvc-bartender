@@ -1,0 +1,71 @@
+@model IEnumerable<Order>
+@{
+    ViewData["Title"] = "Order Queue";
+}
+
+<h1>Order Queue</h1>
+<p>Oldest orders first. Claim an order to start preparing it, then mark it ready for pick up.</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No orders yet. The queue is empty.</div>
+}
+else
+{
+    <table class="table table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Order #</th>
+                <th>Drink</th>
+                <th>Customer</th>
+                <th>Placed At</th>
+                <th>Status</th>
+                <th>Claimed By</th>
+                <th>Finished At</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Drink?.Name</td>
+                    <td>@order.CustomerName</td>
+                    <td>@order.CreatedAt.ToString("g")</td>
+                    <td>
+                        @switch (order.GetOrderStatus())
+                        {
+                            case OrderStatus.Ordered:
+                                <span class="badge bg-warning text-dark">Ordered</span>
+                                break;
+                            case OrderStatus.Started:
+                                <span class="badge bg-primary">Being Prepared</span>
+                                break;
+                            case OrderStatus.Finished:
+                                <span class="badge bg-success">Ready for Pick Up</span>
+                                break;
+                        }
+                    </td>
+                    <td>@(order.AssignedBartender?.Name ?? "—")</td>
+                    <td>@(order.FinishedAt?.ToString("g") ?? "—")</td>
+                    <td>
+                        @if (order.GetOrderStatus() != OrderStatus.Finished)
+                        {
+                            <form asp-controller="Order" asp-action="Advance" asp-route-id="@order.Id" method="post">
+                                @if (order.GetOrderStatus() == OrderStatus.Ordered)
+                                {
+                                    <button type="submit" class="btn btn-sm btn-primary">Claim &amp; Start</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-sm btn-success">Ready for Pick Up</button>
+                                }
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

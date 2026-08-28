@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using cis_proj.Models;
 
@@ -11,9 +12,11 @@ using cis_proj.Models;
 namespace cis_proj.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260828003135_AddDrinkToOrder")]
+    partial class AddDrinkToOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,24 +142,6 @@ namespace cis_proj.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Email = "bartender@bar.com",
-                            Name = "Sam Barkeep",
-                            Password = "4523f961e3845992b04ae19a48d846a986d87062e5c9e91c785b4c691dbd4636",
-                            Role = "Bartender"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Email = "server@bar.com",
-                            Name = "Riley Server",
-                            Password = "14bf075c90460abf992eded5e80766dc474229ecc33a72b63e6844cce4a5f32c",
-                            Role = "Server"
-                        });
                 });
 
             modelBuilder.Entity("cis_proj.Models.Order", b =>

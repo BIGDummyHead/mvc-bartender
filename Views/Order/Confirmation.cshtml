@@ -1,0 +1,18 @@
+@model Order
+@{
+    ViewData["Title"] = "Order Placed";
+}
+
+<h1>Order Placed</h1>
+
+<div class="alert alert-success" style="max-width: 30rem;">
+    <p class="mb-1"><strong>Order #:</strong> @Model.Id</p>
+    <p class="mb-1"><strong>Drink:</strong> @Model.Drink?.Name</p>
+    <p class="mb-1"><strong>For:</strong> @Model.CustomerName</p>
+    <p class="mb-0"><strong>Placed at:</strong> @Model.CreatedAt.ToString("g")</p>
+</div>
+
+<p>Thanks, @Model.CustomerName! The bartender will start on your drink shortly.</p>
+
+<a class="btn btn-primary" asp-controller="Order" asp-action="Menu">Order Another Drink</a>
+<a class="btn btn-secondary" asp-controller="Home" asp-action="Index">Home</a>
