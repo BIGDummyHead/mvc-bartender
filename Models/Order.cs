@@ -34,4 +34,13 @@ public class Order
     /// The status of the order.
     /// </summary>
     public int OrderStatus { get; set; }
+
+    /// <summary>
+    /// Converts the Order Status (int) into the OrderStatus enum.
+    /// </summary>
+    /// <returns>The OrderStatus enum value</returns>
+    public OrderStatus GetOrderStatus()
+    {
+        return (OrderStatus)OrderStatus;
+    }
 }
